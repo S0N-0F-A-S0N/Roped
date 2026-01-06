@@ -11,11 +11,11 @@ export const CONFIG = {
     initialY: 30
   },
   colors: {
-    raycastColor: 0xff0000,
-    pointDefault: 0xe5383b, // From point.js
-    pointWhite: 0xffffff,   // From point.js
-    stickDefault: 0xAEAEAE, // From stick.js
-    pointMaterial: 0xffffff // From InstancePoint.js
+    raycastColor: '#ff0000',
+    pointDefault: '#e5383b', // From point.js
+    pointWhite: '#ffffff',   // From point.js
+    stickDefault: '#aeaeae', // From stick.js
+    pointMaterial: '#ffffff' // From InstancePoint.js
   },
   physics: {
     bounce: 0.9,
@@ -50,6 +50,7 @@ export const CONFIG = {
     pointGeometryRadius: 16,
     stickZOffset: -0.01,
     stickScaleX: 1,
-    stickScaleZ: 1
+    stickScaleZ: 1,
+    stickRotationOffset: Math.PI / 2
   }
 };

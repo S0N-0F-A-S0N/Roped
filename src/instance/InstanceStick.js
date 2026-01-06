@@ -83,7 +83,7 @@ export default class InstanceStick {
         var deltaY = p1.position.y - p0.position.y;
         var deltaX = p1.position.x - p0.position.x;
 
-        return Math.atan2(deltaY, deltaX) + (90 * Math.PI/180);
+        return Math.atan2(deltaY, deltaX) + CONFIG.instance.stickRotationOffset;
     }
 
 }
