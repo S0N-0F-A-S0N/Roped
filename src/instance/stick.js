@@ -1,10 +1,11 @@
+import { CONFIG } from '../config.js';
 
 export default class Stick{
     constructor(point0, point1) {
 
         this.p0 = point0;
         this.p1 = point1;
-        this.defaultColor = 0xAEAEAE;
+        this.defaultColor = CONFIG.colors.stickDefault;
 
         this.length = this.distance(this.p0, this.p1);
 

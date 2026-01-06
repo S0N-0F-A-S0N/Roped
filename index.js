@@ -1,42 +1,37 @@
 import * as THREE from 'three';
-import Stats from 'three/examples/jsm/libs/stats.module.js';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-
-//
-
+import Stats from 'three/addons/libs/stats.module.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { CONFIG } from './src/config.js';
+import { UI } from './src/UI.js';
 import { initInstanceObjects } from './src/instance/InstanceInit.js';
 
-require('normalize.css/normalize.css');
-require('./src/index.css');
-
-//
+// Removed webpack requires
+// require('normalize.css/normalize.css');
+// require('./src/index.css');
 
 let renderer, scene, camera, composer;
 let container, stats, clock;
 let raycaster, color, mouse, leftMouseButtonDown, clicked;
 let instanceSticks, instancePoints;
-let dist, controls;
-
-//
+let dist, controls, ui;
 
 window.onload = function () {
 
-    dist = 15;
+    dist = CONFIG.dist;
 
     initScene();
     initObjects();
     initRaycaster();
     initStats();
 
-    // controls = new OrbitControls(camera, renderer.domElement);
+    // Initialize UI
+    ui = new UI(CONFIG);
 
     animate();
 
     initEventListeners();
     onWindowResize();
 }
-
-//
 
 function initScene() {
 
@@ -49,14 +44,12 @@ function initScene() {
     container = document.getElementById('canvas');
     container.appendChild(renderer.domElement);
 
-    camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 1000);
+    camera = new THREE.PerspectiveCamera(CONFIG.camera.fov, window.innerWidth / window.innerHeight, CONFIG.camera.near, CONFIG.camera.far);
     camera.position.set(0, 0, dist);
 
     scene = new THREE.Scene();
 
 }
-
-//
 
 function initObjects() {
 
@@ -73,8 +66,6 @@ function initObjects() {
 
 }
 
-//
-
 function initStats() {
 
     stats = new Stats();
@@ -82,19 +73,15 @@ function initStats() {
 
 }
 
-//
-
 function initRaycaster() {
 
     raycaster = new THREE.Raycaster();
-    mouse = new THREE.Vector2(30, 30);
+    mouse = new THREE.Vector2(CONFIG.mouse.initialX, CONFIG.mouse.initialY);
 
-    color = new THREE.Color(0xff0000);
+    color = new THREE.Color(CONFIG.colors.raycastColor);
     clicked = false;
 
 }
-
-//
 
 function animate() {
 
@@ -105,7 +92,7 @@ function animate() {
     let delta = clock.getDelta();
 
     // if less than 5 fps pause animation to stop glitches
-    if (delta > 1/5) {
+    if (delta > CONFIG.physics.timeStep) {
         delta = 0;
     }
 
@@ -114,7 +101,7 @@ function animate() {
     var selected = raycastPoints();
 
     // run update sticks from 3-5 times to make it more stable and less jittery
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < CONFIG.physics.subSteps; i++) {
         instanceSticks.update(delta);
     }
 
@@ -127,8 +114,6 @@ function animate() {
     renderer.render(scene, camera);
 
 }
-
-//
 
 function raycastPoints() {
 
@@ -158,8 +143,6 @@ function raycastPoints() {
     return selected;
 }
 
-//
-
 function raycastSticks() {
 
     var intersection = raycaster.intersectObject(instanceSticks.mesh);
@@ -179,8 +162,6 @@ function raycastSticks() {
     }
 }
 
-//
-
 // calculates the size of the bounding box of what is visible on the canvas given
 // different screen sizes
 function getTrueCanvasSize() {
@@ -199,8 +180,6 @@ function getTrueCanvasSize() {
     return returnArray;
 
 }
-
-//
 
 function initEventListeners() {
 
@@ -246,8 +225,6 @@ function onWindowResize() {
 
 }
 
-//
-
 function onMouseMove(event) {
 
     event.preventDefault();
@@ -257,13 +234,9 @@ function onMouseMove(event) {
 
 }
 
-// 
-
 function onClick() { 
     clicked = true;
 }
-
-//
 
 function onTouchStart(event) {
 
@@ -286,8 +259,6 @@ function onTouchMove(event) {
 
 }
 
-//
-
 function onTouchEnd() {
 
     // event.preventDefault();
@@ -295,5 +266,3 @@ function onTouchEnd() {
     leftMouseButtonDown = false;
 
 }
-
-//

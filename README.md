@@ -16,3 +16,30 @@ __Requires npm (https://www.npmjs.com/)__
 
 - __Run__ - npm run start
 
+## CDN Import Example
+
+To import this project using jsdelivr CDN with auto-minification:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cloth Demo</title>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.182.0/build/three.module.min.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.182.0/examples/jsm/"
+}}</script>
+</head>
+<body>
+<!-- Your content here -->
+<script type="module">
+// Note: The original project structure might not export everything by default.
+// Adjust the import path according to where the build artifacts are hosted.
+// Example:
+// import { initInstanceObjects } from 'https://cdn.jsdelivr.net/gh/RobertoLovece/Rope-Grid@master/src/instance/InstanceInit.js';
+</script>
+</body>
+</html>
+```
