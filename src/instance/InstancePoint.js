@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { CONFIG } from '../config.js';
 
 const dummy = new THREE.Object3D();
 
@@ -10,10 +11,10 @@ export default class InstancePoint {
 
         this.points = points;
 
-        var geometry = new THREE.CircleGeometry(radius, 16);
+        var geometry = new THREE.CircleGeometry(radius, CONFIG.instance.pointGeometryRadius);
         // var geometry = new THREE.SphereGeometry(radius, 16, 16);
         // const geometry = new THREE.BoxGeometry(1, 1, 1);
-        var material = new THREE.MeshBasicMaterial(0xffffff);
+        var material = new THREE.MeshBasicMaterial({ color: CONFIG.colors.pointMaterial });
 
         this.mesh = new THREE.InstancedMesh(geometry, material, this.points.length);
 

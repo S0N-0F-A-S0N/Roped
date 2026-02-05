@@ -3,6 +3,7 @@ import InstanceStick from './InstanceStick.js'
 
 import Stick from './stick.js'
 import Point from './point.js';
+import { CONFIG } from '../config.js';
 
 //
 
@@ -27,37 +28,29 @@ function calculateDimensions(canvasW, canvasH)  {
 
     var returnArray = [];
 
-    var xOffset = (1/20) * canvasW;
+    var xOffset = CONFIG.grid.xOffsetRatio * canvasW;
 
-    var yOffsetUp = (1/20) * canvasH;
-    var yOffsetDown = (1/5) * canvasH;
+    var yOffsetUp = CONFIG.grid.yOffsetUpRatio * canvasH;
+    var yOffsetDown = CONFIG.grid.yOffsetDownRatio * canvasH;
 
-    var pointR = 0.14;
-    var stickW = pointR * 0.6;
+    var pointR = CONFIG.grid.pointRadius;
+    var stickW = pointR * CONFIG.grid.stickWidthRatio;
 
-    if (canvasW > 22) {
-        var yOffsetDown = (1/3) * canvasH;
+    if (canvasW > CONFIG.grid.largeCanvas.threshold) {
+        var yOffsetDown = CONFIG.grid.largeCanvas.yOffsetDownRatio * canvasH;
 
-        var xNumber = 11;
-        var yNumber = 8;
+        var xNumber = CONFIG.grid.largeCanvas.xNumber;
+        var yNumber = CONFIG.grid.largeCanvas.yNumber;
 
-        var lockedPos = []
-
-        lockedPos.push(0);
-        lockedPos.push(5);
-        lockedPos.push(10);
+        var lockedPos = CONFIG.grid.largeCanvas.locked;
     }
     else {
-        var yOffsetDown = (1/4) * canvasH;
+        var yOffsetDown = CONFIG.grid.mediumCanvas.yOffsetDownRatio * canvasH;
 
-        var xNumber = 9;
-        var yNumber = 8;
+        var xNumber = CONFIG.grid.mediumCanvas.xNumber;
+        var yNumber = CONFIG.grid.mediumCanvas.yNumber;
 
-        var lockedPos = []
-
-        lockedPos.push(0);
-        lockedPos.push(4);
-        lockedPos.push(8);
+        var lockedPos = CONFIG.grid.mediumCanvas.locked;
     }
 
     returnArray.push(xOffset);
@@ -122,7 +115,7 @@ function createGrid(dimensions, canvasW, canvasH) {
 
     yCoords.forEach(function(y) {
         xCoords.forEach(function(x) {
-            if (count == lockedPos[0] || count == lockedPos[1] || count == lockedPos[2]) {
+            if (lockedPos.includes(count)) {
                 points.push(
                     new Point(x, y, true)
                 );
@@ -175,8 +168,3 @@ function createGrid(dimensions, canvasW, canvasH) {
     return returnArray;
 
 }
-
-
-
-
-

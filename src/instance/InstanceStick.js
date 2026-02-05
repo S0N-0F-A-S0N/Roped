@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { CONFIG } from '../config.js';
 
 const dummy = new THREE.Object3D();
 
@@ -10,7 +11,7 @@ export default class InstanceStick {
 
         this.sticks = sticks;
 
-        var geometry = new THREE.PlaneBufferGeometry(width, 1);
+        var geometry = new THREE.PlaneGeometry(width, 1);
         // var geometry = new THREE.BoxGeometry(width, 1, width);
     
         var material = new THREE.MeshBasicMaterial();
@@ -32,13 +33,13 @@ export default class InstanceStick {
             var mid = this.centerMidPoint(stick.p0, stick.p1)
             var midX = mid.x;
             var midY = mid.y;
-            dummy.position.set(midX,midY,-0.01);
+            dummy.position.set(midX, midY, CONFIG.instance.stickZOffset);
 
             var angle = (this.angleBetweenPoints(stick.p0, stick.p1)) * 1;
             dummy.rotation.set(0,0, angle);
         
             var dist = stick.distance(stick.p0, stick.p1);
-            dummy.scale.set(1,dist,1);
+            dummy.scale.set(CONFIG.instance.stickScaleX, dist, CONFIG.instance.stickScaleZ);
 
             dummy.updateMatrix();
 
@@ -82,7 +83,7 @@ export default class InstanceStick {
         var deltaY = p1.position.y - p0.position.y;
         var deltaX = p1.position.x - p0.position.x;
 
-        return Math.atan2(deltaY, deltaX) + (90 * Math.PI/180);
+        return Math.atan2(deltaY, deltaX) + CONFIG.instance.stickRotationOffset;
     }
 
 }
